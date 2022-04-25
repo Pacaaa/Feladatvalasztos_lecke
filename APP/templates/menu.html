@@ -7,15 +7,51 @@
     <title>Választás</title>
 </head>
 <body>
-
+    {{user}}
     
     {% for feladat in feladatok  %}
-    <p>{{feladat.nev}}</p>
-    <form action="{{feladat.nev}}" method="POST">
-        {% csrf_token %}
-        <button type="submit" value="{{feladat.nev}}" name="jelentkezes">Jelentkezés</button>
-    </form>
+
+    
+        <hr>
+        
+        {% if feladat.resztvevo is request.user.username %}
+
+            <p>{{feladat.nev}}</p>
+            <form action="{{feladat.nev}}" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="{{feladat.nev}}" name="jelentkezes">Jelentkezés</button>
+            </form>
+            <p>{{feladat.resztvevo}}</p>
+        
+     
+        <!-- {% elif feladat.resztvevo|stringformat:'s' == "" and vanmar==1   %} -->
+        {% elif vanmar == "1" %}
+           
+          
+            <p>{{feladat.nev}}</p>
+            <form action="{{feladat.nev}}" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="{{feladat.nev}}" name="atjelentkezes">Átjelentkezés</button>
+            </form>
+          
+        {% else %}
+            <p>{{feladat.nev}}</p>
+            <form action="{{feladat.nev}}" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="{{feladat.nev}}" name="atjelentkezes" disabled >Átjelentkezés</button>
+                
+            </form>
+            <p>{{feladat.resztvevo}}</p>
+
+          
+             
+            
+        {% endif %}
+        
+
     {% endfor %}
+        
+   
         
     
 </body>

@@ -30,16 +30,22 @@ def belepes(request):
 
 
 def valasztas(request):
+    count=Feladat.objects.filter(resztvevo=request.user).count()
+
     context={
-        'feladatok':Feladat.objects.all()
+        'feladatok':Feladat.objects.all(),
+        'vanmar':str(count),
     }
+   
 
     return render(request,"menu.html",context)
 
 
 def jelentkezes(request,valami):
-    context={
-        'feladatok':Feladat.objects.all()
-    }
 
-    return render(request,"menu.html",context)
+    
+  
+    Feladat.objects.filter(resztvevo=request.user).update(resztvevo="")
+    Feladat.objects.filter(nev=valami).update(resztvevo=str(request.user))
+
+    return redirect(valasztas)
