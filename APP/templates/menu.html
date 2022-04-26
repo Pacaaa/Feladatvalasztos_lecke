@@ -14,18 +14,17 @@
     
         <hr>
         
-        {% if feladat.resztvevo is request.user.username %}
-
+        {% if feladat.resztvevo == request.user.username %}
             <p>{{feladat.nev}}</p>
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}" name="jelentkezes">Jelentkezés</button>
+                <button type="submit" value="{{feladat.nev}}" name="lejelentkezes">Lejelentkezés</button>
             </form>
             <p>{{feladat.resztvevo}}</p>
         
-     
-        <!-- {% elif feladat.resztvevo|stringformat:'s' == "" and vanmar==1   %} -->
-        {% elif vanmar == "1" %}
+       
+
+        {% elif vanmar and feladat.resztvevo|stringformat:'s' == ""  %}
            
           
             <p>{{feladat.nev}}</p>
@@ -34,11 +33,20 @@
                 <button type="submit" value="{{feladat.nev}}" name="atjelentkezes">Átjelentkezés</button>
             </form>
           
+        {% elif feladat.resztvevo != request.user.username and feladat.resztvevo|stringformat:'s' != "" %}
+            
+            <p>{{feladat.nev}}</p>
+            <form action="{{feladat.nev}}" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="{{feladat.nev}}"  disabled>jelentkezés</button>
+            </form>
+            <p>{{feladat.resztvevo}}</p>
+        
         {% else %}
             <p>{{feladat.nev}}</p>
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}" name="atjelentkezes" disabled >Átjelentkezés</button>
+                <button type="submit" value="{{feladat.nev}}" name="jelentkezes" >Jelentkezés</button>
                 
             </form>
             <p>{{feladat.resztvevo}}</p>
