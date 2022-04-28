@@ -1,60 +1,67 @@
+{% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}" >
     <title>Választás</title>
 </head>
 <body>
-    {{user}}
+    <p id="user">Bejelentkezve: {{user}}</p>
     
     {% for feladat in feladatok  %}
 
-    
-        <hr>
-        
+        <div >
+            <hr>
+        <h1 class="cim">{{feladat.nev}}</h1>
         {% if feladat.resztvevo == request.user.username %}
-            <p>{{feladat.nev}}</p>
+           
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}" name="lejelentkezes">Lejelentkezés</button>
+                <button id="lejelentkezes" type="submit" value="{{feladat.nev}}" name="lejelentkezes">Lejelentkezés</button>
             </form>
-            <p>{{feladat.resztvevo}}</p>
-        
+         
        
 
         {% elif vanmar and feladat.resztvevo|stringformat:'s' == ""  %}
            
           
-            <p>{{feladat.nev}}</p>
+         
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}" name="atjelentkezes">Átjelentkezés</button>
+                <button id="atjelentkezes" type="submit" value="{{feladat.nev}}" name="atjelentkezes">Átjelentkezés</button>
             </form>
           
         {% elif feladat.resztvevo != request.user.username and feladat.resztvevo|stringformat:'s' != "" %}
             
-            <p>{{feladat.nev}}</p>
+          
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}"  disabled>jelentkezés</button>
+                <button id="jelentkezesD" type="submit" value="{{feladat.nev}}"  disabled>jelentkezés</button>
             </form>
-            <p>{{feladat.resztvevo}}</p>
+        
         
         {% else %}
-            <p>{{feladat.nev}}</p>
+           
             <form action="{{feladat.nev}}" method="POST">
                 {% csrf_token %}
-                <button type="submit" value="{{feladat.nev}}" name="jelentkezes" >Jelentkezés</button>
+                <button id="jelentkezes" type="submit" value="{{feladat.nev}}" name="jelentkezes" >Jelentkezés</button>
                 
             </form>
-            <p>{{feladat.resztvevo}}</p>
-
+           
           
              
             
         {% endif %}
+
+        <p>Jelentkezett: {{feladat.resztvevo}}</p>
+        </div>
+        
+
         
 
     {% endfor %}
